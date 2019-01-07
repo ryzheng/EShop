@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.eshop.dao.ProductDao">
+    <select id="getAllProducts" resultType="Product">
+        SELECT *
+        FROM product_base
+    </select>
+
+    <select id="getProductsForPage" resultType="Product">
+        SELECT *
+        FROM product_base
+        LIMIT #{begin}, #{limit}
+    </select>
+
+    <select id="countProducts" resultType="Integer">
+        SELECT COUNT(`index`) AS count_num
+        FROM product_base
+    </select>
+
+    <insert id="addProduct">
+        INSERT IGNORE INTO product_base (pid, pname, brand, price, capacity, weight, size, category, color, material,
+                                         image, intro, bar_code, sales_status)
+            VALUE (#{pid}, #{pname}, #{brand}, #{price}, #{capacity}, #{weight}, #{size}, #{category}, #{color},
+                   #{material}, #{image}, #{intro}, #{bar_code}, #{sales_status})
+    </insert>
+
+    <update id="updateProduct">
+        UPDATE product_base
+        SET price=#{price},
+            sales_status=#{status},
+            intro=#{intro}
+        WHERE pid = #{pid}
+    </update>
+
+    <delete id="deleteProduct">
+        DELETE
+        FROM product_base
+        WHERE pid = #{pid}
+    </delete>
+</mapper>

@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.eshop.dao.CustomerDao">
+    <select id="getAllCustomers" resultType="Customer">
+        SELECT *
+        FROM customer
+    </select>
+
+    <select id="getCustomersForPage" resultType="Customer">
+        SELECT *
+        FROM customer
+        LIMIT #{begin}, #{limit}
+    </select>
+
+    <select id="countCustomers" resultType="Integer">
+        SELECT COUNT(`index`) AS count_num
+        FROM customer
+    </select>
+
+    <select id="getCustomer" resultType="Customer">
+        SELECT *
+        FROM customer
+        WHERE email = #{account}
+           OR cname = #{account}
+           OR tel = #{account}
+    </select>
+
+    <select id="getCustomerPass" resultType="String">
+        SELECT cpass
+        FROM customer
+        WHERE cid = #{cid}
+    </select>
+
+    <insert id="addCustomer">
+        <!--ignore忽略自动增长的主键id-->
+        INSERT IGNORE INTO customer (cid,cname,cpass,realname,tel,email,address,status)
+        VALUE (#{cid},#{cname},#{cpass},#{realname},#{tel},#{email},#{address},#{status})
+    </insert>
+
+    <update id="updateCustomer">
+        UPDATE customer
+        SET cname=#{cname},
+            email=#{email},
+            tel=#{tel},
+            realname=#{realname},
+            address=#{address},
+            status=#{status}
+        WHERE cid = #{cid}
+    </update>
+
+    <update id="updatePassword">
+        UPDATE customer
+        SET cpass=#{newPass}
+        WHERE cid = #{cid}
+    </update>
+
+    <delete id="deleteCustomer" parameterType="String">
+        DELETE
+        FROM customer
+        WHERE cid = #{cid}
+    </delete>
+</mapper>
